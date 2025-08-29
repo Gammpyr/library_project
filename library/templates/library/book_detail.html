@@ -1,0 +1,36 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Детали книги{% endblock %}
+
+{% block content %}
+{% include 'library/header.html' %}
+
+<h2 class="mt-5 mb-4">{{ book }}</h2>
+<p>Автор: {{book.author}}</p>
+<p>Дата публикации: {{book.publication_data|date:'d M Y'}}</p>
+
+<a href="{% url 'library:books_list' %}" class="btn btn-primary mt-5">← Назад к списку</a>
+
+{% endblock %}
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--	<meta charset="UTF-8">-->
+<!--	<title>Список книг</title>-->
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--	<link rel="stylesheet" href="/static/css/bootstrap.min.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--	<div class="container mt-5">-->
+<!--		<h1 class="mb-4">{{ book }}</h1>-->
+<!--		<p>Автор: {{book.author}}</p>-->
+<!--		<p>Дата публикации: {{book.publication_data|date:'d M Y'}}</p>-->
+<!--	</div>-->
+
+<!--	<script src="/static/js/bootstrap.bundle.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->
