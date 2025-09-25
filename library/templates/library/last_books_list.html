@@ -9,7 +9,7 @@
 	{% for book in books %}
 		<li class="list-group-item">
 			<a href="{% url 'library:book_detail' book.id %}">{{book}}</a>
-			- {{book.publication_data|date:'d M Y'}}
+			- {{book.publication_date|date:'d M Y'}}
 			- {{book.author}}
 		</li>
 	{% endfor %}

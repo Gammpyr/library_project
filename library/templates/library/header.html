@@ -1,4 +1,14 @@
 <header>
 	<h1>Библиотека</h1>
 	<p>Добро пожаловать в библиотеку</p>
+	<nav>
+		<div class="d-grid gap-2 d-md-block">
+			<a href="{% url 'library:book_list' %}" class="btn btn-primary mb-1">Список книг</a>
+			<a href="{% url 'library:book_create' %}" class="btn btn-outline-primary mb-1">Добавить новую книгу</a>
+		</div>
+		<div class="d-grid gap-2 d-md-block">
+			<a href="{% url 'library:author_list' %}" class="btn btn-primary mb-0">Список авторов</a>
+			<a href="{% url 'library:author_create' %}" class="btn btn-outline-primary mb-0">Добавить нового автора</a>
+		</div>
+	</nav>
 </header>

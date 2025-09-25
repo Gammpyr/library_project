@@ -1,0 +1,17 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Детали Автора{% endblock %}
+
+{% block content %}
+{% include 'library/header.html' %}
+	<div class="container mt-5">
+		<h1 class="mb-4">{{author}}</h1>
+		<p>Дата рождения: {{author.birth_date|date:"d M Y"}}</p>
+		<p>Количество книг автора: {{author.books.count}}</p>
+
+		<a href="{% url 'library:author_update' author.pk %}" class="btn btn-primary">Редактировать</a>
+		<a href="{% url 'library:author_delete' author.pk %}" class="btn btn-danger">Удалить</a>
+		<a class="btn btn-secondary" href="{% url 'library:author_list' %}">Назад</a>
+	</div>
+
+{% endblock %}

@@ -5,7 +5,7 @@ from django.db import models
 class Author(models.Model):
     first_name = models.CharField(max_length=150, verbose_name='Имя')
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')
-    birthday = models.DateField(verbose_name='Дата рождения')
+    birth_date = models.DateField(verbose_name='Дата рождения')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -18,7 +18,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название')
-    publication_data = models.DateField(verbose_name='Дата публикации')
+    publication_date = models.DateField(verbose_name='Дата публикации')
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
 
     def __str__(self):
