@@ -13,3 +13,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
+    def display_name(self):
+        return f'{self.first_name} {self.last_name}' or self.username
+

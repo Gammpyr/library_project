@@ -4,17 +4,24 @@
 
 {% block content %}
 {% include 'library/header.html' %}
-
-	<div class="container mt-5">
-		<h1 class="mb-4">Список книг</h1>
-
-		<ul class="list-group">
-			{% for book in books %}
-			<li class="list-group-item">
-				<a href="{% url 'library:book_detail' book.pk %}">{{book.title}}</a> | {{book.author}} | {{book.publication_date}}			</li>
-			{% endfor %}
-		</ul>
-
+<nav>
+	<div class="d-grid gap-2 d-md-block">
+		<a href="{% url 'library:book_create' %}" class="btn btn-outline-primary mb-0">Добавить новую книгу</a>
 	</div>
+</nav>
+
+<div class="container mt-5">
+	<h1 class="mb-4">Список книг</h1>
+
+	<ul class="list-group">
+		{% for book in books %}
+		<li class="list-group-item">
+			<a href="{% url 'library:book_detail' book.pk %}">{{book.title}}</a> | {{book.author}} |
+			{{book.publication_date}}
+		</li>
+		{% endfor %}
+	</ul>
+
+</div>
 
 {% endblock %}

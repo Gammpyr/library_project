@@ -1,6 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
 from library.forms import BookForm, AuthorForm
@@ -9,6 +10,7 @@ from library.models import Book, Author
 
 class IndexListView(ListView):
     pass
+
 
 class BookListView(ListView):
     model = Book
@@ -31,14 +33,14 @@ class BookDetailView(DetailView):
         return context
 
 
-class BookCreateView(CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = BookForm
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:book_list')
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
     form_class = BookForm
     template_name = 'library/book_form.html'
@@ -48,10 +50,11 @@ class BookUpdateView(UpdateView):
         return reverse('library:book_detail', kwargs={'pk': self.object.pk})
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     template_name = 'library/book_confirm_delete.html'
     success_url = reverse_lazy('library:book_list')
+
 
 class AuthorListView(ListView):
     model = Author
@@ -71,21 +74,25 @@ class AuthorDetailView(DetailView):
 
         return context
 
-class AuthorCreateView(CreateView):
+
+class AuthorCreateView(LoginRequiredMixin, CreateView):
     model = Author
     form_class = AuthorForm
     template_name = 'library/author_form.html'
     success_url = reverse_lazy('library:author_list')
 
-class AuthorUpdateView(UpdateView):
+
+class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     model = Author
     form_class = AuthorForm
     template_name = 'library/author_form.html'
     success_url = reverse_lazy('library:author_list')
+
     def get_success_url(self):
         return reverse('library:author_detail', kwargs={'pk': self.object.pk})
 
-class AuthorDeleteView(DeleteView):
+
+class AuthorDeleteView(LoginRequiredMixin, DeleteView):
     model = Author
     template_name = 'library/author_confirm_delete.html'
     success_url = reverse_lazy('library:author_list')
