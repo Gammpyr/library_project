@@ -24,4 +24,19 @@
 	<a class="btn btn-secondary" href="{{ request.META.HTTP_REFERER |default:'library/book_list' }}">Назад</a>
 </div>
 
+{% if perms.library.can_review_book %}
+	<form method="post" action="{% url 'library:book_review' book.pk %}">
+		{% csrf_token %}
+		<textarea class="form-control w-25 mt-2" name="review" placeholder="Напишите отзыв"></textarea>
+		<button class="btn btn-success mt-2" type="submit">Рецензировать</button>
+	</form>
+{% endif %}
+<br>
+{% if perms.library.can_recommend_book %}
+	<form method="post" action="{% url 'library:book_recommend' book.pk %}">
+		{% csrf_token %}
+		<button class="btn btn-success" type="submit">Рекомендовать</button>
+	</form>
+{% endif %}
+
 {% endblock %}

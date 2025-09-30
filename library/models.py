@@ -21,6 +21,9 @@ class Book(models.Model):
     publication_date = models.DateField(verbose_name='Дата публикации')
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
 
+    review = models.TextField(null=True, blank=True, verbose_name='Рецензия')
+    recommend = models.BooleanField(null=True, blank=True, verbose_name='Рекомендовать')
+
     def __str__(self):
         return self.title
 
@@ -28,3 +31,7 @@ class Book(models.Model):
         verbose_name = 'книга'
         verbose_name_plural = 'книги'
         ordering = ['title', ]
+        permissions = [
+            ('can_review_book', 'Может оставлять отзывы о книгах'),
+            ('can_recommend_book', 'Может рекомендовать книги')
+        ]

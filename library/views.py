@@ -1,8 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic.detail import DetailView
+from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.list import ListView
+
 
 from library.forms import BookForm, AuthorForm
 from library.models import Book, Author
@@ -12,17 +14,45 @@ class IndexListView(ListView):
     pass
 
 
-class BookListView(ListView):
+class ReviewBookView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        book = get_object_or_404(Book, id=pk)
+
+        if not request.user.has_perm('library.can_review_book'):
+            return HttpResponseForbidden('У вас нет прав на рецензирование книги')
+
+        book.review = request.POST.get('review')
+        book.save()
+
+        return redirect('library:book_detail', pk=pk)
+
+
+class RecommendBookView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        book = get_object_or_404(Book, id=pk)
+
+        if not request.user.has_perm('library.can_recommend_book'):
+            return HttpResponseForbidden('У вас нет прав на рекомендацию книги')
+
+        book.recommend = True
+        book.save()
+        return redirect('library:book_detail', pk=pk)
+
+
+
+
+class BookListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Book
     template_name = 'library/book_list.html'
     context_object_name = 'books'
+    permission_required = 'library.view_book'
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(publication_date__year__gt=1800)
 
 
-class BookDetailView(DetailView):
+class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
     template_name = 'library/book_detail.html'
     context_object_name = 'book'
@@ -33,27 +63,30 @@ class BookDetailView(DetailView):
         return context
 
 
-class BookCreateView(LoginRequiredMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Book
     form_class = BookForm
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:book_list')
+    permission_required = 'library.add_book'
 
 
-class BookUpdateView(LoginRequiredMixin, UpdateView):
+class BookUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Book
     form_class = BookForm
     template_name = 'library/book_form.html'
     success_url = reverse_lazy('library:book_list')
+    permission_required = 'library.change_book'
 
     def get_success_url(self):
         return reverse('library:book_detail', kwargs={'pk': self.object.pk})
 
 
-class BookDeleteView(LoginRequiredMixin, DeleteView):
+class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Book
     template_name = 'library/book_confirm_delete.html'
     success_url = reverse_lazy('library:book_list')
+    permission_required = 'library.delete_book'
 
 
 class AuthorListView(ListView):
