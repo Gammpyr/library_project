@@ -1,7 +1,17 @@
 from django.db import models
 
+from users.models import CustomUser
 
-# Create your models here.
+
+class Review(models.Model):
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='reviews')
+    rating = models.IntegerField()
+    review_text = models.TextField()
+
+    def __str__(self):
+        return f'Review on {self.book.title}'
+
+
 class Author(models.Model):
     first_name = models.CharField(max_length=150, verbose_name='Имя')
     last_name = models.CharField(max_length=150, verbose_name='Фамилия')

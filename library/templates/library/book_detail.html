@@ -14,10 +14,13 @@
 
 <div class="container mt-5">
 	<h1 class="mb-4">{{ book.title }}</h1>
-	<p>Автор: <a href="{% url 'library:author_detail' book.author_id %}">{{book.author}}</a></p>
-
 	<p>Дата публикации: {{book.publication_date|date:"d M Y"}}</p>
-	<p>Количество книг автора: {{ author_books_count }}</p>
+	<p>Средний рейтинг: {{ average_rating }}</p>
+	<p>Популярная: {{ is_popular|yesno:"Да,Нет" }}</p>
+
+
+	<p>Автор: <a href="{% url 'library:author_detail' book.author_id %}">{{book.author}}</a></p>
+	<p>Количество книг автора в библиотеке: {{ author_books_count }}</p>
 
 	<a href="{% url 'library:book_update' book.pk %}" class="btn btn-primary">Редактировать</a>
 	<a href="{% url 'library:book_delete' book.pk %}" class="btn btn-danger">Удалить</a>
